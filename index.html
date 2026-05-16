@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hidden Risks Under Pressure | Research Proposal</title>
+  <style>
+    :root {
+      --ink: #18252e;
+      --muted: #5d6d78;
+      --soft: #f5f8f9;
+      --paper: #ffffff;
+      --line: #dbe6eb;
+      --blue: #2e6f9e;
+      --blue-soft: #e8f2f7;
+      --teal: #3f8f8a;
+      --warning: #b66f3c;
+      --shadow: 0 18px 50px rgba(28, 48, 60, 0.09);
+      --radius: 18px;
+      --max: 1120px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(46, 111, 158, 0.12), transparent 34rem),
+        linear-gradient(180deg, #fbfcfc 0%, #eef5f6 100%);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .progress {
+      position: fixed;
+      inset: 0 auto auto 0;
+      z-index: 20;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+    }
+
+    .progress span {
+      display: block;
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--teal));
+      transition: width 120ms ease;
+    }
+
+    .page { width: min(var(--max), calc(100% - 36px)); margin: 0 auto; }
+
+    .topbar {
+      position: sticky;
+      top: 12px;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin: 18px auto 0;
+      padding: 10px 12px 10px 16px;
+      border: 1px solid rgba(219, 230, 235, 0.82);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.84);
+      box-shadow: 0 12px 38px rgba(28, 48, 60, 0.08);
+      backdrop-filter: blur(16px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: max-content;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: #263944;
+      text-transform: uppercase;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 30px;
+      height: 30px;
+      place-items: center;
+      border-radius: 50%;
+      color: var(--blue);
+      background: var(--blue-soft);
+      border: 1px solid #d4e8f0;
+    }
+
+    .nav { display: flex; align-items: center; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+    .nav::-webkit-scrollbar { display: none; }
+
+    .nav a {
+      padding: 7px 11px;
+      border-radius: 999px;
+      color: #526673;
+      font-size: 0.82rem;
+      font-weight: 700;
+      white-space: nowrap;
+      transition: background 160ms ease, color 160ms ease;
+    }
+
+    .nav a.is-active, .nav a:hover { color: var(--blue); background: var(--blue-soft); }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.16fr) minmax(290px, 0.84fr);
+      gap: 28px;
+      align-items: stretch;
+      padding: 68px 0 34px;
+      scroll-margin-top: 94px;
+    }
+
+    .hero-main, .hero-panel, .section, .quote-card, .approach-card {
+      border: 1px solid rgba(219, 230, 235, 0.88);
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-main {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 510px;
+      padding: clamp(32px, 5vw, 58px);
+      border-radius: 28px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-main::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.76)),
+        url("data:image/svg+xml,%3Csvg width='620' height='620' viewBox='0 0 620 620' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%238bb8c7' stroke-width='1' opacity='0.38'%3E%3Cpath d='M40 126h540M40 246h540M40 366h540M40 486h540M126 40v540M246 40v540M366 40v540M486 40v540'/%3E%3Ccircle cx='126' cy='126' r='8' fill='%232e6f9e' opacity='0.28'/%3E%3Ccircle cx='366' cy='246' r='8' fill='%233f8f8a' opacity='0.28'/%3E%3Ccircle cx='486' cy='486' r='8' fill='%232e6f9e' opacity='0.22'/%3E%3Cpath d='M126 126C198 192 262 204 366 246S448 386 486 486' stroke='%232e6f9e' stroke-width='3' opacity='0.28'/%3E%3C/g%3E%3C/svg%3E");
+      background-position: right center;
+      background-repeat: no-repeat;
+      background-size: 62%;
+      pointer-events: none;
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 780px; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 18px;
+      color: var(--blue);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 32px;
+      height: 2px;
+      border-radius: 999px;
+      background: var(--blue);
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      max-width: 770px;
+      margin-bottom: 14px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(3rem, 8vw, 6rem);
+      line-height: 0.96;
+      letter-spacing: 0;
+      color: #12232d;
+    }
+
+    .subtitle {
+      max-width: 780px;
+      margin-bottom: 22px;
+      color: #314854;
+      font-size: clamp(1.13rem, 2vw, 1.45rem);
+      line-height: 1.45;
+      font-weight: 650;
+    }
+
+    .intro { max-width: 760px; margin-bottom: 0; color: var(--muted); font-size: 1.04rem; }
+    .tags, .tag { display: none !important; }
+
+    .hero-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 22px;
+      padding: 26px;
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(241, 248, 250, 0.96));
+    }
+
+    .panel-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .panel-heading strong { font-size: 0.88rem; letter-spacing: 0.08em; text-transform: uppercase; }
+
+    .status { display: inline-flex; align-items: center; gap: 7px; color: #2f6f68; font-size: 0.82rem; font-weight: 800; }
+    .status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--teal); }
+
+    .risk-grid { display: grid; gap: 12px; }
+
+    .risk-item {
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 14px;
+      border: 1px solid #dce9ee;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .risk-item svg, .section-icon svg, .card-icon svg, .check svg { width: 20px; height: 20px; stroke-width: 1.8; }
+
+    .mini-icon {
+      display: grid;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      border-radius: 14px;
+      color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .risk-item b { display: block; margin-bottom: 2px; font-size: 0.9rem; }
+    .risk-item span { color: var(--muted); font-size: 0.88rem; line-height: 1.45; }
+
+    .metric-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+
+    .metric {
+      min-height: 84px;
+      padding: 13px 12px;
+      border-radius: 16px;
+      color: #2c4654;
+      background: #eef6f8;
+      border: 1px solid #d8e9ef;
+    }
+
+    .metric b { display: block; font-family: Georgia, "Times New Roman", serif; font-size: 1.45rem; line-height: 1; color: #1e5f87; }
+    .metric span { color: var(--muted); font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
+
+    main { display: grid; gap: 18px; padding: 0 0 30px; }
+
+    .section {
+      display: grid;
+      grid-template-columns: 58px minmax(0, 1fr);
+      gap: 18px;
+      padding: clamp(22px, 4vw, 34px);
+      border-radius: var(--radius);
+      scroll-margin-top: 94px;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 420ms ease, transform 420ms ease, box-shadow 180ms ease;
+    }
+
+    .section.is-visible { opacity: 1; transform: translateY(0); }
+    .section:hover { box-shadow: 0 20px 54px rgba(28, 48, 60, 0.12); }
+
+    .section-icon, .card-icon {
+      display: grid;
+      width: 48px;
+      height: 48px;
+      place-items: center;
+      border-radius: 16px;
+      color: var(--blue);
+      background: var(--blue-soft);
+      border: 1px solid #d5e9f0;
+    }
+
+    h2 {
+      margin-bottom: 8px;
+      color: #182a34;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.55rem, 2vw, 2rem);
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    .section p { max-width: 920px; margin-bottom: 0; color: var(--muted); font-size: 1rem; }
+
+    .quote-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: 58px 1fr;
+      gap: 18px;
+      padding: clamp(26px, 4.5vw, 42px);
+      border-radius: 24px;
+      scroll-margin-top: 94px;
+      background: linear-gradient(135deg, #f5fbfd, #ffffff 62%);
+      border-left: 5px solid var(--blue);
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 420ms ease, transform 420ms ease;
+    }
+
+    .quote-card.is-visible { opacity: 1; transform: translateY(0); }
+
+    .quote-mark {
+      display: grid;
+      width: 48px;
+      height: 48px;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background: var(--blue);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    blockquote { margin: 0; color: #18313d; font-family: Georgia, "Times New Roman", serif; font-size: clamp(1.55rem, 3vw, 2.35rem); line-height: 1.25; }
+
+    .approach { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 20px; }
+
+    .approach-card {
+      display: flex;
+      flex-direction: column;
+      min-height: 238px;
+      padding: 22px;
+      border-radius: var(--radius);
+      transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .approach-card:hover { transform: translateY(-4px); border-color: #bcd8e5; box-shadow: 0 18px 44px rgba(28, 48, 60, 0.12); }
+    .approach-card h3 { margin: 18px 0 8px; color: #1b303b; font-size: 1.08rem; line-height: 1.25; }
+    .approach-card p { margin-bottom: 0; color: var(--muted); font-size: 0.94rem; line-height: 1.55; }
+
+    .checklist { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; max-width: 840px; margin: 16px 0 0; padding: 0; list-style: none; }
+
+    .check {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 10px;
+      align-items: center;
+      min-height: 54px;
+      padding: 12px;
+      border: 1px solid #d9e8ee;
+      border-radius: 14px;
+      color: #334b58;
+      background: #f7fbfc;
+      font-weight: 680;
+    }
+
+    .check span:first-child { display: grid; width: 28px; height: 28px; place-items: center; border-radius: 50%; color: #2f746c; background: #e6f3ef; }
+
+    footer {
+      margin: 14px 0 36px;
+      padding: 20px 24px;
+      border: 1px solid rgba(219, 230, 235, 0.88);
+      border-radius: 18px;
+      color: #526673;
+      background: rgba(255, 255, 255, 0.72);
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    .focus-ring { outline: 3px solid rgba(46, 111, 158, 0.18); outline-offset: 4px; }
+
+    @media (max-width: 900px) {
+      .topbar { align-items: flex-start; border-radius: 22px; flex-direction: column; }
+      .nav { width: 100%; }
+      .hero { grid-template-columns: 1fr; padding-top: 38px; }
+      .hero-main { min-height: auto; }
+      .approach { grid-template-columns: 1fr; }
+      .approach-card { min-height: auto; }
+    }
+
+    @media (max-width: 640px) {
+      .page { width: min(100% - 24px, var(--max)); }
+      .hero-main, .hero-panel, .section, .quote-card { border-radius: 18px; }
+      .hero-main { padding: 30px 22px; }
+      .hero-main::before { background-size: 130%; background-position: 42% 18%; opacity: 0.5; }
+      h1 { font-size: clamp(2.7rem, 14vw, 4rem); }
+      .subtitle { font-size: 1.06rem; }
+      .section, .quote-card { grid-template-columns: 1fr; }
+      .metric-strip, .checklist { grid-template-columns: 1fr; }
+      blockquote { font-size: 1.38rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
+      .section, .quote-card { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+
+  <div class="page">
+    <header class="topbar" aria-label="Proposal navigation">
+      <a class="brand" href="#hero" aria-label="Back to top">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3v18"></path><path d="M8 7h8"></path><path d="M6 11h12"></path><path d="M8 15h8"></path></svg></span>
+        Research Proposal
+      </a>
+      <nav class="nav" aria-label="Page sections">
+        <a href="#problem">Problem</a><a href="#community">Community</a><a href="#question">Question</a><a href="#approach">Approach</a><a href="#ethics">Limits</a><a href="#impact">Impact</a>
+      </nav>
+    </header>
+
+    <section class="hero" id="hero">
+      <div class="hero-main">
+        <div class="hero-content">
+          <p class="eyebrow">High School Research Scholarship Application</p>
+          <h1>Hidden Risks Under Pressure</h1>
+          <p class="subtitle">Machine Learning for Early Risk Stratification of Multidrug-Resistant Wound Infections in Conflict-Related Trauma Care</p>
+          <p class="intro">I want to conduct a research project at the intersection of machine learning, medicine, and war-related public health, focusing on whether machine learning could help identify patients at higher risk of multidrug-resistant wound infections before complete microbiological results are available.</p>
+        </div>
+      </div>
+
+      <aside class="hero-panel" aria-label="Proposal summary">
+        <div>
+          <div class="panel-heading"><strong>Proposal Focus</strong><span class="status">Research prototype</span></div>
+          <div class="risk-grid" aria-label="Key focus areas">
+            <div class="risk-item"><span class="mini-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6"></path></svg></span><div><b>Clinical pressure</b><span>Support earlier awareness before full lab confirmation is available.</span></div></div>
+            <div class="risk-item"><span class="mini-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19V5"></path><path d="M4 19h16"></path><path d="m7 15 4-4 3 3 5-7"></path></svg></span><div><b>Risk stratification</b><span>Compare simple models using transparent evaluation metrics.</span></div></div>
+            <div class="risk-item"><span class="mini-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path><path d="m9 12 2 2 4-5"></path></svg></span><div><b>Responsible boundaries</b><span>Explore decision support while keeping medical judgment central.</span></div></div>
+          </div>
+        </div>
+        <div class="metric-strip" aria-label="Evaluation priorities"><div class="metric"><b>P</b><span>Precision</span></div><div class="metric"><b>R</b><span>Recall</span></div><div class="metric"><b>FN</b><span>False negatives</span></div></div>
+      </aside>
+    </section>
+
+    <main>
+      <section class="section" id="problem" data-section="problem"><div class="section-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M10.3 2.8 1.9 18a2 2 0 0 0 1.7 3h16.8a2 2 0 0 0 1.7-3L13.7 2.8a2 2 0 0 0-3.4 0Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg></div><div><h2>The Problem</h2><p>Antimicrobial resistance is one of the major global challenges facing medicine. In war-related trauma care, the problem becomes even more urgent because injuries are often complex, hospitals can be overloaded, and doctors may need to make decisions before complete microbiological results are available. Multidrug-resistant wound infections can make treatment slower, more complicated, and less effective.</p></div></section>
+      <section class="section" id="community" data-section="community"><div class="section-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 21h18"></path><path d="M5 21V8l7-5 7 5v13"></path><path d="M9 21v-6h6v6"></path></svg></div><div><h2>Why This Matters in My Community</h2><p>In Ukraine, many people understand the immediate danger of conflict-related injuries, but fewer think about infection risks that can appear later and make recovery more difficult. This project focuses on a less visible medical consequence of war: resistant wound infections in overloaded healthcare systems.</p></div></section>
+      <section class="quote-card" id="question" data-section="question" aria-label="Research question"><div class="quote-mark" aria-hidden="true">?</div><blockquote>Can machine learning help identify patients at higher risk of multidrug-resistant wound infections in conflict-related trauma care before complete microbiological results are available?</blockquote></section>
+      <section class="section" id="approach" data-section="approach"><div class="section-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 3H5a2 2 0 0 0-2 2v4"></path><path d="M15 3h4a2 2 0 0 1 2 2v4"></path><path d="M21 15v4a2 2 0 0 1-2 2h-4"></path><path d="M9 21H5a2 2 0 0 1-2-2v-4"></path><path d="M8 12h8"></path><path d="M12 8v8"></path></svg></div><div><h2>My Research Approach</h2><div class="approach"><article class="approach-card" tabindex="0"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"></path></svg></span><h3>Literature Review</h3><p>Study antimicrobial resistance, wound infections, and risk factors in trauma care.</p></article><article class="approach-card" tabindex="0"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Z"></path><path d="M12 9h.01"></path></svg></span><h3>Conceptual Framework</h3><p>Identify possible risk factors such as wound type, time before treatment, previous antibiotic use, trauma complexity, and laboratory indicators.</p></article><article class="approach-card" tabindex="0"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m16 18 6-6-6-6"></path><path d="m8 6-6 6 6 6"></path><path d="m13 4-2 16"></path></svg></span><h3>Python Prototype</h3><p>If suitable public data is available, build a simple classifier and compare models such as logistic regression, decision trees, and random forests.</p></article></div></div></section>
+      <section class="section" id="evaluation" data-section="evaluation"><div class="section-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18"></path><path d="M7 15l3-3 3 2 5-7"></path></svg></div><div><h2>How I Would Evaluate It</h2><p>I would evaluate the prototype using precision, recall, and false negatives. Recall and false negatives would be especially important because missing a high-risk case could be the most dangerous outcome.</p></div></section>
+      <section class="section" id="ethics" data-section="ethics"><div class="section-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path><path d="M9 12l2 2 4-4"></path></svg></div><div><h2>Responsible Use and Limits</h2><p>This project would not be a clinical diagnostic tool. It would not prescribe antibiotics, replace doctors, or make independent medical conclusions. It would be a research-based prototype and framework, developed with guidance from a mentor in medical informatics, public health, or computational medicine.</p></div></section>
+      <section class="section" id="deliverables" data-section="deliverables"><div class="section-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg></div><div><h2>Expected Deliverables</h2><ul class="checklist"><li class="check"><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m20 6-11 11-5-5"></path></svg></span>Literature review</li><li class="check"><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m20 6-11 11-5-5"></path></svg></span>Conceptual framework for early MDR wound infection risk stratification</li><li class="check"><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m20 6-11 11-5-5"></path></svg></span>Python prototype, if data allows</li><li class="check"><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m20 6-11 11-5-5"></path></svg></span>Model comparison and evaluation</li><li class="check"><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m20 6-11 11-5-5"></path></svg></span>Clear limitations and ethical boundaries</li></ul></div></section>
+      <section class="section" id="impact" data-section="impact"><div class="section-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2v6"></path><path d="M12 16v6"></path><path d="M4.93 4.93l4.24 4.24"></path><path d="M14.83 14.83l4.24 4.24"></path><path d="M2 12h6"></path><path d="M16 12h6"></path><path d="M4.93 19.07l4.24-4.24"></path><path d="M14.83 9.17l4.24-4.24"></path></svg></div><div><h2>Potential Impact</h2><p>The goal is to explore how data-driven tools could support earlier risk awareness, laboratory prioritization, and infection-control decisions in overloaded healthcare systems. For me, this project reflects the kind of computer science I want to build: technology that does not replace human judgment, but helps reveal hidden risks earlier and supports better decisions when delays can have serious human consequences.</p></div></section>
+    </main>
+
+    <footer>Research proposal by Kseniia — 16-year-old student interested in machine learning, medicine, and responsible technology.</footer>
+  </div>
+
+  <script>
+    document.querySelectorAll(".tags, .tag").forEach((element) => element.remove());
+    const progressBar = document.getElementById("progressBar");
+    const navLinks = [...document.querySelectorAll(".nav a")];
+    const revealItems = [...document.querySelectorAll(".section, .quote-card")];
+    const updateProgress = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      progressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+    };
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add("is-visible");
+      });
+    }, { threshold: 0.12 });
+    revealItems.forEach((item) => revealObserver.observe(item));
+    const sectionObserver = new IntersectionObserver((entries) => {
+      const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!visible) return;
+      navLinks.forEach((link) => link.classList.toggle("is-active", link.getAttribute("href") === `#${visible.target.id}`));
+    }, { rootMargin: "-28% 0px -58% 0px", threshold: [0.18, 0.4, 0.65] });
+    document.querySelectorAll("main > section").forEach((section) => sectionObserver.observe(section));
+    document.querySelectorAll(".approach-card").forEach((card) => {
+      card.addEventListener("focus", () => card.classList.add("focus-ring"));
+      card.addEventListener("blur", () => card.classList.remove("focus-ring"));
+    });
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    updateProgress();
+  </script>
+</body>
+</html>
