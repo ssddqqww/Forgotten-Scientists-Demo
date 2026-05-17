@@ -6,18 +6,24 @@
   <title>Hidden Risks Under Pressure | Research Proposal</title>
   <style>
     :root {
-      --ink: #18252e;
-      --muted: #5d6d78;
-      --soft: #f5f8f9;
-      --paper: #ffffff;
-      --line: #dbe6eb;
-      --blue: #2e6f9e;
-      --blue-soft: #e8f2f7;
-      --teal: #3f8f8a;
-      --warning: #b66f3c;
-      --shadow: 0 18px 50px rgba(28, 48, 60, 0.09);
+      --bg: #081113;
+      --ink: #142025;
+      --paper: #f7f3ec;
+      --paper-warm: #fffaf2;
+      --muted: #66767a;
+      --line: rgba(35, 65, 70, 0.18);
+      --line-strong: rgba(21, 51, 56, 0.34);
+      --teal: #42c7bd;
+      --teal-dark: #13736c;
+      --amber: #d89447;
+      --rust: #a94b36;
+      --blood: #7d2f32;
+      --field: #13262b;
+      --shadow: 0 26px 80px rgba(4, 16, 19, 0.24);
+      --soft-shadow: 0 18px 48px rgba(18, 48, 54, 0.14);
+      --radius-xl: 30px;
       --radius: 18px;
-      --max: 1120px;
+      --max: 1160px;
     }
 
     * {
@@ -26,16 +32,19 @@
 
     html {
       scroll-behavior: smooth;
+      background: var(--bg);
     }
 
     body {
       margin: 0;
       color: var(--ink);
       background:
-        radial-gradient(circle at top left, rgba(46, 111, 158, 0.12), transparent 34rem),
-        linear-gradient(180deg, #fbfcfc 0%, #eef5f6 100%);
+        radial-gradient(circle at 13% 4%, rgba(66, 199, 189, 0.18), transparent 30rem),
+        radial-gradient(circle at 90% 18%, rgba(169, 75, 54, 0.22), transparent 27rem),
+        linear-gradient(180deg, #0a171a 0 760px, #eee9df 760px, #f5f1e9 100%);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       line-height: 1.65;
+      overflow-x: hidden;
     }
 
     a {
@@ -43,72 +52,81 @@
       text-decoration: none;
     }
 
-    .progress {
+    .scroll-meter {
       position: fixed;
-      inset: 0 auto auto 0;
-      z-index: 20;
-      width: 100%;
+      inset: 0 0 auto 0;
+      z-index: 50;
       height: 4px;
       background: transparent;
     }
 
-    .progress span {
+    .scroll-meter span {
       display: block;
       width: 0%;
       height: 100%;
-      background: linear-gradient(90deg, var(--blue), var(--teal));
-      transition: width 120ms ease;
+      background: linear-gradient(90deg, var(--teal), var(--amber), var(--rust));
+      box-shadow: 0 0 18px rgba(66, 199, 189, 0.45);
     }
 
     .page {
-      width: min(var(--max), calc(100% - 36px));
+      width: min(var(--max), calc(100% - 34px));
       margin: 0 auto;
+      position: relative;
     }
 
     .topbar {
       position: sticky;
-      top: 12px;
-      z-index: 10;
+      top: 14px;
+      z-index: 20;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 18px;
+      gap: 16px;
       margin: 18px auto 0;
-      padding: 10px 12px 10px 16px;
-      border: 1px solid rgba(219, 230, 235, 0.82);
+      padding: 12px 14px 12px 16px;
+      border: 1px solid rgba(198, 229, 226, 0.22);
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.84);
-      box-shadow: 0 12px 38px rgba(28, 48, 60, 0.08);
-      backdrop-filter: blur(16px);
+      color: #e8f2ef;
+      background: rgba(8, 20, 23, 0.72);
+      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.24);
+      backdrop-filter: blur(18px);
     }
 
     .brand {
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 9px;
+      gap: 10px;
       min-width: max-content;
-      font-size: 0.82rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      color: #263944;
+      font-size: 0.8rem;
+      font-weight: 850;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
     }
 
     .brand-mark {
       display: grid;
-      width: 30px;
-      height: 30px;
+      width: 34px;
+      height: 34px;
       place-items: center;
       border-radius: 50%;
-      color: var(--blue);
-      background: var(--blue-soft);
-      border: 1px solid #d4e8f0;
+      color: var(--teal);
+      background: linear-gradient(145deg, rgba(66, 199, 189, 0.2), rgba(216, 148, 71, 0.1));
+      border: 1px solid rgba(66, 199, 189, 0.36);
+    }
+
+    .brand-mark svg,
+    .icon svg,
+    .node svg,
+    .check svg {
+      width: 20px;
+      height: 20px;
+      stroke-width: 1.8;
     }
 
     .nav {
       display: flex;
       align-items: center;
-      gap: 2px;
+      gap: 4px;
       overflow-x: auto;
       scrollbar-width: none;
     }
@@ -118,88 +136,98 @@
     }
 
     .nav a {
-      padding: 7px 11px;
+      padding: 8px 12px;
       border-radius: 999px;
-      color: #526673;
+      color: rgba(232, 242, 239, 0.78);
       font-size: 0.82rem;
-      font-weight: 700;
+      font-weight: 760;
       white-space: nowrap;
-      transition: background 160ms ease, color 160ms ease;
+      transition: color 160ms ease, background 160ms ease;
     }
 
-    .nav a.is-active,
-    .nav a:hover {
-      color: var(--blue);
-      background: var(--blue-soft);
+    .nav a:hover,
+    .nav a.is-active {
+      color: #041416;
+      background: linear-gradient(135deg, var(--teal), #bdeee6);
     }
 
     .hero {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 28px;
-      align-items: stretch;
-      padding: 68px 0 34px;
-      scroll-margin-top: 94px;
-    }
-
-    .hero-main,
-    .hero-panel,
-    .section,
-    .quote-card,
-    .approach-card {
-      border: 1px solid rgba(219, 230, 235, 0.88);
-      background: rgba(255, 255, 255, 0.9);
-      box-shadow: var(--shadow);
-    }
-
-    .hero-main {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      min-height: 510px;
-      padding: clamp(32px, 5vw, 58px);
-      border-radius: 28px;
-      overflow: hidden;
       position: relative;
+      margin-top: 28px;
+      min-height: 590px;
+      border-radius: 34px;
+      overflow: hidden;
+      color: #f8f3eb;
+      background:
+        linear-gradient(90deg, rgba(7, 15, 17, 0.92), rgba(7, 15, 17, 0.7) 50%, rgba(7, 15, 17, 0.3)),
+        url("assets/mdr-risk-field.png") center / cover no-repeat;
+      border: 1px solid rgba(207, 236, 230, 0.2);
+      box-shadow: var(--shadow);
+      scroll-margin-top: 110px;
+      isolation: isolate;
     }
 
-    .hero-main::before {
+    .hero::before {
       content: "";
       position: absolute;
       inset: 0;
       background:
-        linear-gradient(90deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.76)),
-        url("data:image/svg+xml,%3Csvg width='620' height='620' viewBox='0 0 620 620' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%238bb8c7' stroke-width='1' opacity='0.38'%3E%3Cpath d='M40 126h540M40 246h540M40 366h540M40 486h540M126 40v540M246 40v540M366 40v540M486 40v540'/%3E%3Ccircle cx='126' cy='126' r='8' fill='%232e6f9e' opacity='0.28'/%3E%3Ccircle cx='366' cy='246' r='8' fill='%233f8f8a' opacity='0.28'/%3E%3Ccircle cx='486' cy='486' r='8' fill='%232e6f9e' opacity='0.22'/%3E%3Cpath d='M126 126C198 192 262 204 366 246S448 386 486 486' stroke='%232e6f9e' stroke-width='3' opacity='0.28'/%3E%3C/g%3E%3C/svg%3E");
-      background-position: right center;
-      background-repeat: no-repeat;
-      background-size: 62%;
+        linear-gradient(90deg, transparent 0 49%, rgba(66, 199, 189, 0.12) 50%, transparent 51%),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.06) 0 1px, transparent 1px 68px);
+      mix-blend-mode: screen;
+      opacity: 0.45;
       pointer-events: none;
     }
 
-    .hero-content {
+    .hero::after {
+      content: "";
+      position: absolute;
+      top: -20%;
+      bottom: -20%;
+      width: 20%;
+      left: -24%;
+      z-index: -1;
+      background: linear-gradient(90deg, transparent, rgba(66, 199, 189, 0.34), transparent);
+      filter: blur(2px);
+      animation: scan 7.5s ease-in-out infinite;
+    }
+
+    @keyframes scan {
+      0%, 18% { transform: translateX(0); opacity: 0; }
+      28% { opacity: 0.85; }
+      74% { opacity: 0.4; }
+      100% { transform: translateX(760%); opacity: 0; }
+    }
+
+    .hero-inner {
       position: relative;
       z-index: 1;
-      max-width: 780px;
+      display: grid;
+      min-height: 590px;
+      grid-template-columns: minmax(0, 1.1fr) 360px;
+      gap: 30px;
+      align-items: center;
+      padding: clamp(28px, 5vw, 54px);
     }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 9px;
+      gap: 12px;
       margin: 0 0 18px;
-      color: var(--blue);
+      color: #aeece5;
       font-size: 0.82rem;
-      font-weight: 800;
-      letter-spacing: 0.1em;
+      font-weight: 900;
+      letter-spacing: 0.13em;
       text-transform: uppercase;
     }
 
     .eyebrow::before {
       content: "";
-      width: 32px;
+      width: 48px;
       height: 2px;
       border-radius: 999px;
-      background: var(--blue);
+      background: linear-gradient(90deg, var(--teal), var(--amber));
     }
 
     h1,
@@ -210,341 +238,523 @@
     }
 
     h1 {
-      max-width: 770px;
-      margin-bottom: 14px;
+      max-width: 900px;
+      margin-bottom: 18px;
       font-family: Georgia, "Times New Roman", serif;
-      font-size: clamp(3rem, 8vw, 6rem);
-      line-height: 0.96;
+      font-size: clamp(3.2rem, 6.4vw, 5.8rem);
+      line-height: 0.92;
       letter-spacing: 0;
-      color: #12232d;
+      text-wrap: balance;
     }
 
     .subtitle {
-      max-width: 780px;
-      margin-bottom: 22px;
-      color: #314854;
-      font-size: clamp(1.13rem, 2vw, 1.45rem);
+      max-width: 880px;
+      margin-bottom: 18px;
+      color: #e6eee9;
+      font-size: clamp(1.12rem, 2vw, 1.48rem);
       line-height: 1.45;
-      font-weight: 650;
+      font-weight: 740;
     }
 
     .intro {
-      max-width: 760px;
+      max-width: 780px;
       margin-bottom: 0;
-      color: var(--muted);
-      font-size: 1.04rem;
+      color: rgba(235, 242, 239, 0.82);
+      font-size: 1.03rem;
     }
 
-    .tags,
-    .tag {
-      display: none !important;
-    }
-
-    .hero-panel {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 22px;
-      padding: 26px;
+    .field-card {
+      align-self: center;
+      display: grid;
+      gap: 14px;
+      padding: 18px;
       border-radius: 24px;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(241, 248, 250, 0.96));
+      background: rgba(8, 20, 23, 0.58);
+      border: 1px solid rgba(183, 225, 218, 0.24);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 22px 70px rgba(0,0,0,0.24);
+      backdrop-filter: blur(14px);
     }
 
-    .panel-heading {
+    .field-label {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--line);
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(225, 238, 234, 0.14);
+      color: rgba(248, 243, 235, 0.88);
+      font-size: 0.76rem;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
     }
 
-    .panel-heading strong {
-      font-size: 0.88rem;
+    .field-label span:last-child {
+      color: var(--amber);
+    }
+
+    .signal-row {
+      display: grid;
+      grid-template-columns: 44px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      border-radius: 16px;
+      background: rgba(245, 239, 226, 0.08);
+      border: 1px solid rgba(225, 238, 234, 0.12);
+      transform: translateY(0);
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    .signal-row:hover {
+      transform: translateY(-3px);
+      border-color: rgba(66, 199, 189, 0.48);
+      background: rgba(245, 239, 226, 0.12);
+    }
+
+    .pulse {
+      display: grid;
+      width: 40px;
+      height: 40px;
+      place-items: center;
+      border-radius: 15px;
+      color: #061415;
+      background: var(--teal);
+      box-shadow: 0 0 0 0 rgba(66, 199, 189, 0.45);
+      animation: pulse 2.8s ease-out infinite;
+    }
+
+    .signal-row:nth-child(2) .pulse { background: var(--amber); animation-delay: 0.45s; }
+    .signal-row:nth-child(3) .pulse { background: #d46759; animation-delay: 0.9s; }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(66, 199, 189, 0.38); }
+      70% { box-shadow: 0 0 0 15px rgba(66, 199, 189, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(66, 199, 189, 0); }
+    }
+
+    .signal-row b {
+      display: block;
+      color: #fff9ef;
+      font-size: 0.92rem;
+      line-height: 1.2;
+    }
+
+    .signal-row span {
+      color: rgba(233, 242, 238, 0.66);
+      font-size: 0.82rem;
+      line-height: 1.35;
+    }
+
+    .signal-row em {
+      color: var(--amber);
+      font-style: normal;
+      font-size: 0.78rem;
+      font-weight: 900;
       letter-spacing: 0.08em;
+    }
+
+    .ticker {
+      display: flex;
+      gap: 10px;
+      overflow: hidden;
+      padding-top: 2px;
+      color: rgba(230, 242, 239, 0.64);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .ticker span {
+      min-width: max-content;
+      animation: drift 13s linear infinite;
+    }
+
+    @keyframes drift {
+      to { transform: translateX(-100%); }
+    }
+
+    main {
+      display: grid;
+      gap: 24px;
+      padding: 30px 0 44px;
+    }
+
+    .panel,
+    .section,
+    .question,
+    .approach-card {
+      border: 1px solid rgba(25, 62, 68, 0.14);
+      background: rgba(255, 250, 242, 0.82);
+      box-shadow: var(--soft-shadow);
+      backdrop-filter: blur(16px);
+    }
+
+    .panel {
+      display: grid;
+      gap: 18px;
+      padding: clamp(22px, 4vw, 34px);
+      border-radius: var(--radius-xl);
+      background:
+        linear-gradient(135deg, rgba(255, 250, 242, 0.94), rgba(237, 244, 239, 0.88)),
+        linear-gradient(90deg, rgba(66,199,189,.08), rgba(216,148,71,.08));
+      scroll-margin-top: 112px;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line-strong);
+    }
+
+    .panel-head strong {
+      font-size: 0.88rem;
+      letter-spacing: 0.13em;
       text-transform: uppercase;
     }
 
     .status {
       display: inline-flex;
       align-items: center;
-      gap: 7px;
-      color: #2f6f68;
-      font-size: 0.82rem;
-      font-weight: 800;
+      gap: 8px;
+      color: var(--teal-dark);
+      font-size: 0.84rem;
+      font-weight: 900;
+      white-space: nowrap;
     }
 
     .status::before {
       content: "";
-      width: 8px;
-      height: 8px;
+      width: 9px;
+      height: 9px;
       border-radius: 50%;
-      background: var(--teal);
+      background: var(--teal-dark);
+      box-shadow: 0 0 0 5px rgba(66, 199, 189, 0.14);
     }
 
-    .risk-grid {
+    .focus-grid {
       display: grid;
       gap: 12px;
     }
 
-    .risk-item {
+    .focus-item {
       display: grid;
-      grid-template-columns: 38px 1fr;
-      gap: 12px;
-      align-items: start;
-      padding: 14px;
-      border: 1px solid #dce9ee;
-      border-radius: 16px;
+      grid-template-columns: 48px 1fr;
+      gap: 14px;
+      align-items: center;
+      padding: 16px;
+      border-radius: 18px;
+      color: #1b2c31;
+      background: rgba(255, 255, 255, 0.58);
+      border: 1px solid rgba(26, 75, 82, 0.14);
+      transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+    }
+
+    .focus-item:hover {
+      transform: translateX(5px);
       background: rgba(255, 255, 255, 0.82);
+      border-color: rgba(19, 115, 108, 0.34);
     }
 
-    .risk-item svg,
-    .section-icon svg,
-    .card-icon svg,
-    .check svg {
-      width: 20px;
-      height: 20px;
-      stroke-width: 1.8;
-    }
-
-    .mini-icon {
+    .node {
       display: grid;
-      width: 38px;
-      height: 38px;
+      width: 48px;
+      height: 48px;
       place-items: center;
-      border-radius: 14px;
-      color: var(--blue);
-      background: var(--blue-soft);
+      border-radius: 16px;
+      color: #092024;
+      background: #dff3ef;
+      border: 1px solid rgba(19, 115, 108, 0.16);
     }
 
-    .risk-item b {
+    .focus-item:nth-child(2) .node { background: #f5e4c9; color: #6c3a13; }
+    .focus-item:nth-child(3) .node { background: #f1d6d0; color: #712f25; }
+
+    .focus-item b {
       display: block;
       margin-bottom: 2px;
-      font-size: 0.9rem;
+      font-size: 1rem;
     }
 
-    .risk-item span {
+    .focus-item span {
       color: var(--muted);
-      font-size: 0.88rem;
-      line-height: 1.45;
+      font-size: 0.94rem;
     }
 
     .metric-strip {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+      gap: 12px;
     }
 
     .metric {
-      min-height: 84px;
-      padding: 13px 12px;
-      border-radius: 16px;
-      color: #2c4654;
-      background: #eef6f8;
-      border: 1px solid #d8e9ef;
+      position: relative;
+      min-height: 94px;
+      padding: 16px;
+      overflow: hidden;
+      border-radius: 18px;
+      background: #10272c;
+      color: #f8f3eb;
+      border: 1px solid rgba(66, 199, 189, 0.24);
+    }
+
+    .metric::after {
+      content: "";
+      position: absolute;
+      inset: auto -20% -38% auto;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: rgba(66, 199, 189, 0.13);
     }
 
     .metric b {
       display: block;
       font-family: Georgia, "Times New Roman", serif;
-      font-size: 1.45rem;
+      font-size: 2.1rem;
       line-height: 1;
-      color: #1e5f87;
+      color: #b6eee8;
     }
 
+    .metric:nth-child(3) b { color: #f0b184; }
+
     .metric span {
-      color: var(--muted);
-      font-size: 0.75rem;
-      font-weight: 800;
+      color: rgba(248, 243, 235, 0.68);
+      font-size: 0.76rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
     }
 
-    main {
-      display: grid;
-      gap: 18px;
-      padding: 0 0 30px;
-    }
-
     .section {
+      position: relative;
       display: grid;
-      grid-template-columns: 58px minmax(0, 1fr);
-      gap: 18px;
-      padding: clamp(22px, 4vw, 34px);
-      border-radius: var(--radius);
-      scroll-margin-top: 94px;
+      grid-template-columns: 62px minmax(0, 1fr);
+      gap: 20px;
+      padding: clamp(24px, 4vw, 38px);
+      border-radius: var(--radius-xl);
+      scroll-margin-top: 112px;
       opacity: 0;
-      transform: translateY(12px);
-      transition: opacity 420ms ease, transform 420ms ease, box-shadow 180ms ease;
+      transform: translateY(16px);
+      transition: opacity 500ms ease, transform 500ms ease;
     }
 
-    .section.is-visible {
+    .section.is-visible,
+    .question.is-visible,
+    .approach-card.is-visible {
       opacity: 1;
       transform: translateY(0);
     }
 
-    .section:hover {
-      box-shadow: 0 20px 54px rgba(28, 48, 60, 0.12);
+    .section::before {
+      content: "";
+      position: absolute;
+      inset: 18px auto 18px 24px;
+      width: 3px;
+      border-radius: 999px;
+      background: linear-gradient(var(--teal), rgba(66,199,189,0), var(--amber));
+      opacity: 0.4;
     }
 
-    .section-icon,
-    .card-icon {
+    .icon {
+      position: relative;
+      z-index: 1;
       display: grid;
-      width: 48px;
-      height: 48px;
+      width: 54px;
+      height: 54px;
       place-items: center;
-      border-radius: 16px;
-      color: var(--blue);
-      background: var(--blue-soft);
-      border: 1px solid #d5e9f0;
+      border-radius: 18px;
+      color: var(--teal-dark);
+      background: #e2f2ee;
+      border: 1px solid rgba(19, 115, 108, 0.2);
     }
 
     h2 {
-      margin-bottom: 8px;
-      color: #182a34;
+      margin-bottom: 10px;
+      color: #142025;
       font-family: Georgia, "Times New Roman", serif;
-      font-size: clamp(1.55rem, 2vw, 2rem);
-      line-height: 1.18;
-      letter-spacing: 0;
+      font-size: clamp(1.7rem, 2.5vw, 2.55rem);
+      line-height: 1.1;
+      text-wrap: balance;
     }
 
     .section p {
-      max-width: 920px;
+      max-width: 940px;
       margin-bottom: 0;
-      color: var(--muted);
-      font-size: 1rem;
+      color: #54666b;
+      font-size: 1.02rem;
     }
 
-    .quote-card {
+    .question {
       position: relative;
       display: grid;
-      grid-template-columns: 58px 1fr;
-      gap: 18px;
-      padding: clamp(26px, 4.5vw, 42px);
-      border-radius: 24px;
-      scroll-margin-top: 94px;
-      background: linear-gradient(135deg, #f5fbfd, #ffffff 62%);
-      border-left: 5px solid var(--blue);
+      grid-template-columns: 70px 1fr;
+      gap: 22px;
+      align-items: center;
+      padding: clamp(28px, 5vw, 50px);
+      overflow: hidden;
+      border-radius: 34px;
+      color: #f9f1e6;
+      background:
+        linear-gradient(135deg, rgba(10, 29, 33, 0.96), rgba(31, 67, 69, 0.92)),
+        url("assets/mdr-risk-field.png") center / cover;
+      border: 1px solid rgba(66, 199, 189, 0.24);
+      box-shadow: var(--shadow);
+      scroll-margin-top: 112px;
       opacity: 0;
-      transform: translateY(12px);
-      transition: opacity 420ms ease, transform 420ms ease;
+      transform: translateY(16px);
+      transition: opacity 500ms ease, transform 500ms ease;
     }
 
-    .quote-card.is-visible {
-      opacity: 1;
-      transform: translateY(0);
+    .question::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(110deg, transparent 0 38%, rgba(66, 199, 189, 0.16) 48%, transparent 58%);
+      animation: questionScan 6.8s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes questionScan {
+      0%, 28% { transform: translateX(-80%); opacity: 0; }
+      42% { opacity: 1; }
+      100% { transform: translateX(80%); opacity: 0; }
     }
 
     .quote-mark {
+      position: relative;
+      z-index: 1;
       display: grid;
-      width: 48px;
-      height: 48px;
+      width: 64px;
+      height: 64px;
       place-items: center;
       border-radius: 50%;
-      color: #fff;
-      background: var(--blue);
+      color: #081416;
+      background: linear-gradient(135deg, var(--teal), #d8fff6);
       font-family: Georgia, "Times New Roman", serif;
-      font-size: 2rem;
+      font-size: 2.4rem;
       line-height: 1;
     }
 
     blockquote {
+      position: relative;
+      z-index: 1;
       margin: 0;
-      color: #18313d;
       font-family: Georgia, "Times New Roman", serif;
-      font-size: clamp(1.55rem, 3vw, 2.35rem);
-      line-height: 1.25;
+      font-size: clamp(1.55rem, 3vw, 2.45rem);
+      line-height: 1.22;
+      text-wrap: balance;
     }
 
-    .approach {
+    .approach-wrap {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-top: 20px;
+      gap: 18px;
+      margin-top: 22px;
     }
 
     .approach-card {
-      display: flex;
-      flex-direction: column;
-      min-height: 238px;
-      padding: 22px;
-      border-radius: var(--radius);
-      transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+      position: relative;
+      min-height: 270px;
+      padding: 24px;
+      overflow: hidden;
+      border-radius: 24px;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 500ms ease, transform 500ms ease, border-color 180ms ease;
+    }
+
+    .approach-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(66, 199, 189, 0.13), transparent 46%, rgba(216, 148, 71, 0.12));
+      opacity: 0;
+      transition: opacity 180ms ease;
     }
 
     .approach-card:hover {
-      transform: translateY(-4px);
-      border-color: #bcd8e5;
-      box-shadow: 0 18px 44px rgba(28, 48, 60, 0.12);
+      border-color: rgba(19, 115, 108, 0.34);
+      transform: translateY(-5px);
+    }
+
+    .approach-card:hover::before {
+      opacity: 1;
+    }
+
+    .approach-card .node,
+    .approach-card h3,
+    .approach-card p {
+      position: relative;
+      z-index: 1;
     }
 
     .approach-card h3 {
       margin: 18px 0 8px;
-      color: #1b303b;
-      font-size: 1.08rem;
-      line-height: 1.25;
+      color: #142025;
+      font-size: 1.1rem;
+      line-height: 1.2;
     }
 
     .approach-card p {
-      margin-bottom: 0;
       color: var(--muted);
-      font-size: 0.94rem;
-      line-height: 1.55;
+      font-size: 0.96rem;
+      line-height: 1.56;
     }
 
     .checklist {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
-      max-width: 840px;
-      margin: 16px 0 0;
+      max-width: 900px;
+      margin: 18px 0 0;
       padding: 0;
       list-style: none;
     }
 
     .check {
       display: grid;
-      grid-template-columns: 28px 1fr;
-      gap: 10px;
+      grid-template-columns: 32px 1fr;
+      gap: 12px;
       align-items: center;
-      min-height: 54px;
-      padding: 12px;
-      border: 1px solid #d9e8ee;
-      border-radius: 14px;
-      color: #334b58;
-      background: #f7fbfc;
-      font-weight: 680;
+      min-height: 58px;
+      padding: 13px;
+      border-radius: 16px;
+      color: #263c42;
+      background: rgba(255, 255, 255, 0.54);
+      border: 1px solid rgba(25, 62, 68, 0.13);
+      font-weight: 760;
     }
 
     .check span:first-child {
       display: grid;
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
       place-items: center;
       border-radius: 50%;
-      color: #2f746c;
-      background: #e6f3ef;
+      color: #081416;
+      background: #bcebe4;
     }
 
     footer {
-      margin: 14px 0 36px;
-      padding: 20px 24px;
-      border: 1px solid rgba(219, 230, 235, 0.88);
-      border-radius: 18px;
-      color: #526673;
-      background: rgba(255, 255, 255, 0.72);
+      margin: 0 0 38px;
+      padding: 22px;
+      border-radius: 22px;
+      color: rgba(248, 243, 235, 0.74);
+      background: #0d1b1f;
+      border: 1px solid rgba(66, 199, 189, 0.18);
       text-align: center;
-      font-size: 0.95rem;
+      box-shadow: var(--soft-shadow);
     }
 
-    .focus-ring {
-      outline: 3px solid rgba(46, 111, 158, 0.18);
-      outline-offset: 4px;
-    }
-
-    @media (max-width: 900px) {
+    @media (max-width: 980px) {
       .topbar {
         align-items: flex-start;
-        border-radius: 22px;
+        border-radius: 24px;
         flex-direction: column;
       }
 
@@ -552,57 +762,48 @@
         width: 100%;
       }
 
-      .hero {
-        grid-template-columns: 1fr;
-        padding-top: 38px;
-      }
-
-      .hero-main {
+      .hero,
+      .hero-inner {
         min-height: auto;
       }
 
-      .approach {
+      .hero-inner {
         grid-template-columns: 1fr;
       }
 
-      .approach-card {
+      .field-card {
         min-height: auto;
+      }
+
+      .approach-wrap {
+        grid-template-columns: 1fr;
       }
     }
 
     @media (max-width: 640px) {
       .page {
-        width: min(100% - 24px, var(--max));
+        width: min(100% - 22px, var(--max));
       }
 
-      .hero-main,
-      .hero-panel,
-      .section,
-      .quote-card {
-        border-radius: 18px;
+      .hero {
+        border-radius: 24px;
       }
 
-      .hero-main {
+      .hero-inner {
         padding: 30px 22px;
       }
 
-      .hero-main::before {
-        background-size: 130%;
-        background-position: 42% 18%;
-        opacity: 0.5;
-      }
-
       h1 {
-        font-size: clamp(2.7rem, 14vw, 4rem);
+        font-size: clamp(3.1rem, 15vw, 4.8rem);
       }
 
       .subtitle {
-        font-size: 1.06rem;
+        font-size: 1.02rem;
       }
 
-      .section,
-      .quote-card {
-        grid-template-columns: 1fr;
+      .panel-head {
+        align-items: flex-start;
+        flex-direction: column;
       }
 
       .metric-strip,
@@ -610,8 +811,14 @@
         grid-template-columns: 1fr;
       }
 
-      blockquote {
-        font-size: 1.38rem;
+      .section,
+      .question {
+        grid-template-columns: 1fr;
+        border-radius: 24px;
+      }
+
+      .section::before {
+        display: none;
       }
     }
 
@@ -619,12 +826,14 @@
       *,
       *::before,
       *::after {
+        animation: none !important;
         scroll-behavior: auto !important;
         transition-duration: 0.01ms !important;
       }
 
       .section,
-      .quote-card {
+      .question,
+      .approach-card {
         opacity: 1;
         transform: none;
       }
@@ -632,7 +841,7 @@
   </style>
 </head>
 <body>
-  <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+  <div class="scroll-meter" aria-hidden="true"><span id="scrollMeter"></span></div>
 
   <div class="page">
     <header class="topbar" aria-label="Proposal navigation">
@@ -658,50 +867,69 @@
     </header>
 
     <section class="hero" id="hero">
-      <div class="hero-main">
-        <div class="hero-content">
+      <div class="hero-inner">
+        <div class="hero-copy">
           <p class="eyebrow">High School Research Scholarship Application</p>
           <h1>Hidden Risks Under Pressure</h1>
           <p class="subtitle">Machine Learning for Early Risk Stratification of Multidrug-Resistant Wound Infections in Conflict-Related Trauma Care</p>
           <p class="intro">I want to conduct a research project at the intersection of machine learning, medicine, and war-related public health, focusing on whether machine learning could help identify patients at higher risk of multidrug-resistant wound infections before complete microbiological results are available.</p>
         </div>
-      </div>
 
-      <aside class="hero-panel" aria-label="Proposal summary">
-        <div>
-          <div class="panel-heading">
-            <strong>Proposal Focus</strong>
-            <span class="status">Research prototype</span>
+        <aside class="field-card" aria-label="Animated risk signal summary">
+          <div class="field-label"><span>Triage Signal Board</span><span>MDR</span></div>
+          <div class="signal-row">
+            <span class="pulse" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 12h4l2-6 4 12 2-6h4"></path></svg>
+            </span>
+            <div><b>Early warning window</b><span>Before complete microbiology results arrive.</span></div>
+            <em>PRE-LAB</em>
           </div>
-          <div class="risk-grid" aria-label="Key focus areas">
-            <div class="risk-item">
-              <span class="mini-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M12 2v20"></path>
-                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6"></path>
-                </svg>
-              </span>
-              <div><b>Clinical pressure</b><span>Support earlier awareness before full lab confirmation is available.</span></div>
-            </div>
-            <div class="risk-item">
-              <span class="mini-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M4 19V5"></path>
-                  <path d="M4 19h16"></path>
-                  <path d="m7 15 4-4 3 3 5-7"></path>
-                </svg>
-              </span>
-              <div><b>Risk stratification</b><span>Compare simple models using transparent evaluation metrics.</span></div>
-            </div>
-            <div class="risk-item">
-              <span class="mini-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path>
-                  <path d="m9 12 2 2 4-5"></path>
-                </svg>
-              </span>
-              <div><b>Responsible boundaries</b><span>Explore decision support while keeping medical judgment central.</span></div>
-            </div>
+          <div class="signal-row">
+            <span class="pulse" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19V5"></path><path d="M4 19h16"></path><path d="m7 15 4-4 3 3 5-7"></path></svg>
+            </span>
+            <div><b>Model comparison</b><span>Transparent classifiers, measured by clinical risk.</span></div>
+            <em>ML</em>
+          </div>
+          <div class="signal-row">
+            <span class="pulse" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path><path d="m9 12 2 2 4-5"></path></svg>
+            </span>
+            <div><b>Human judgment stays central</b><span>Decision support, not diagnosis or prescription.</span></div>
+            <em>ETHICS</em>
+          </div>
+          <div class="ticker" aria-hidden="true">
+            <span>MDR RISK SIGNAL / LAB PRIORITY / TRAUMA CARE / FALSE NEGATIVES / RECALL / INFECTION CONTROL / </span>
+            <span>MDR RISK SIGNAL / LAB PRIORITY / TRAUMA CARE / FALSE NEGATIVES / RECALL / INFECTION CONTROL / </span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <main>
+      <section class="panel" aria-label="Proposal focus">
+        <div class="panel-head">
+          <strong>Proposal Focus</strong>
+          <span class="status">Research prototype</span>
+        </div>
+        <div class="focus-grid">
+          <div class="focus-item">
+            <span class="node" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            </span>
+            <div><b>Clinical pressure</b><span>Support earlier awareness before full lab confirmation is available.</span></div>
+          </div>
+          <div class="focus-item">
+            <span class="node" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19V5"></path><path d="M4 19h16"></path><path d="m7 15 4-4 3 3 5-7"></path></svg>
+            </span>
+            <div><b>Risk stratification</b><span>Compare simple models using transparent evaluation metrics.</span></div>
+          </div>
+          <div class="focus-item">
+            <span class="node" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path><path d="m9 12 2 2 4-5"></path></svg>
+            </span>
+            <div><b>Responsible boundaries</b><span>Explore decision support while keeping medical judgment central.</span></div>
           </div>
         </div>
         <div class="metric-strip" aria-label="Evaluation priorities">
@@ -709,17 +937,11 @@
           <div class="metric"><b>R</b><span>Recall</span></div>
           <div class="metric"><b>FN</b><span>False negatives</span></div>
         </div>
-      </aside>
-    </section>
+      </section>
 
-    <main>
-      <section class="section" id="problem" data-section="problem">
-        <div class="section-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M10.3 2.8 1.9 18a2 2 0 0 0 1.7 3h16.8a2 2 0 0 0 1.7-3L13.7 2.8a2 2 0 0 0-3.4 0Z"></path>
-            <path d="M12 9v4"></path>
-            <path d="M12 17h.01"></path>
-          </svg>
+      <section class="section" id="problem" data-observe>
+        <div class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M10.3 2.8 1.9 18a2 2 0 0 0 1.7 3h16.8a2 2 0 0 0 1.7-3L13.7 2.8a2 2 0 0 0-3.4 0Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
         </div>
         <div>
           <h2>The Problem</h2>
@@ -727,13 +949,9 @@
         </div>
       </section>
 
-      <section class="section" id="community" data-section="community">
-        <div class="section-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M3 21h18"></path>
-            <path d="M5 21V8l7-5 7 5v13"></path>
-            <path d="M9 21v-6h6v6"></path>
-          </svg>
+      <section class="section" id="community" data-observe>
+        <div class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 21h18"></path><path d="M5 21V8l7-5 7 5v13"></path><path d="M9 21v-6h6v6"></path></svg>
         </div>
         <div>
           <h2>Why This Matters in My Community</h2>
@@ -741,53 +959,30 @@
         </div>
       </section>
 
-      <section class="quote-card" id="question" data-section="question" aria-label="Research question">
+      <section class="question" id="question" data-observe aria-label="Research question">
         <div class="quote-mark" aria-hidden="true">?</div>
         <blockquote>Can machine learning help identify patients at higher risk of multidrug-resistant wound infections in conflict-related trauma care before complete microbiological results are available?</blockquote>
       </section>
 
-      <section class="section" id="approach" data-section="approach">
-        <div class="section-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M9 3H5a2 2 0 0 0-2 2v4"></path>
-            <path d="M15 3h4a2 2 0 0 1 2 2v4"></path>
-            <path d="M21 15v4a2 2 0 0 1-2 2h-4"></path>
-            <path d="M9 21H5a2 2 0 0 1-2-2v-4"></path>
-            <path d="M8 12h8"></path>
-            <path d="M12 8v8"></path>
-          </svg>
+      <section class="section" id="approach" data-observe>
+        <div class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 3H5a2 2 0 0 0-2 2v4"></path><path d="M15 3h4a2 2 0 0 1 2 2v4"></path><path d="M21 15v4a2 2 0 0 1-2 2h-4"></path><path d="M9 21H5a2 2 0 0 1-2-2v-4"></path><path d="M8 12h8"></path><path d="M12 8v8"></path></svg>
         </div>
         <div>
           <h2>My Research Approach</h2>
-          <div class="approach">
-            <article class="approach-card" tabindex="0">
-              <span class="card-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                  <path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"></path>
-                </svg>
-              </span>
+          <div class="approach-wrap">
+            <article class="approach-card" data-observe>
+              <span class="node" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"></path></svg></span>
               <h3>Literature Review</h3>
               <p>Study antimicrobial resistance, wound infections, and risk factors in trauma care.</p>
             </article>
-            <article class="approach-card" tabindex="0">
-              <span class="card-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Z"></path>
-                  <path d="M12 9h.01"></path>
-                </svg>
-              </span>
+            <article class="approach-card" data-observe>
+              <span class="node" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Z"></path><path d="M12 9h.01"></path></svg></span>
               <h3>Conceptual Framework</h3>
               <p>Identify possible risk factors such as wound type, time before treatment, previous antibiotic use, trauma complexity, and laboratory indicators.</p>
             </article>
-            <article class="approach-card" tabindex="0">
-              <span class="card-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="m16 18 6-6-6-6"></path>
-                  <path d="m8 6-6 6 6 6"></path>
-                  <path d="m13 4-2 16"></path>
-                </svg>
-              </span>
+            <article class="approach-card" data-observe>
+              <span class="node" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m16 18 6-6-6-6"></path><path d="m8 6-6 6 6 6"></path><path d="m13 4-2 16"></path></svg></span>
               <h3>Python Prototype</h3>
               <p>If suitable public data is available, build a simple classifier and compare models such as logistic regression, decision trees, and random forests.</p>
             </article>
@@ -795,12 +990,9 @@
         </div>
       </section>
 
-      <section class="section" id="evaluation" data-section="evaluation">
-        <div class="section-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M3 3v18h18"></path>
-            <path d="M7 15l3-3 3 2 5-7"></path>
-          </svg>
+      <section class="section" id="evaluation" data-observe>
+        <div class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18"></path><path d="M7 15l3-3 3 2 5-7"></path></svg>
         </div>
         <div>
           <h2>How I Would Evaluate It</h2>
@@ -808,12 +1000,9 @@
         </div>
       </section>
 
-      <section class="section" id="ethics" data-section="ethics">
-        <div class="section-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path>
-            <path d="M9 12l2 2 4-4"></path>
-          </svg>
+      <section class="section" id="ethics" data-observe>
+        <div class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path><path d="M9 12l2 2 4-4"></path></svg>
         </div>
         <div>
           <h2>Responsible Use and Limits</h2>
@@ -821,12 +1010,9 @@
         </div>
       </section>
 
-      <section class="section" id="deliverables" data-section="deliverables">
-        <div class="section-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M9 11l3 3L22 4"></path>
-            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-          </svg>
+      <section class="section" id="deliverables" data-observe>
+        <div class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
         </div>
         <div>
           <h2>Expected Deliverables</h2>
@@ -840,18 +1026,9 @@
         </div>
       </section>
 
-      <section class="section" id="impact" data-section="impact">
-        <div class="section-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M12 2v6"></path>
-            <path d="M12 16v6"></path>
-            <path d="M4.93 4.93l4.24 4.24"></path>
-            <path d="M14.83 14.83l4.24 4.24"></path>
-            <path d="M2 12h6"></path>
-            <path d="M16 12h6"></path>
-            <path d="M4.93 19.07l4.24-4.24"></path>
-            <path d="M14.83 9.17l4.24-4.24"></path>
-          </svg>
+      <section class="section" id="impact" data-observe>
+        <div class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2v6"></path><path d="M12 16v6"></path><path d="M4.93 4.93l4.24 4.24"></path><path d="M14.83 14.83l4.24 4.24"></path><path d="M2 12h6"></path><path d="M16 12h6"></path><path d="M4.93 19.07l4.24-4.24"></path><path d="M14.83 9.17l4.24-4.24"></path></svg>
         </div>
         <div>
           <h2>Potential Impact</h2>
@@ -868,46 +1045,37 @@
   <script>
     document.querySelectorAll(".tags, .tag").forEach((element) => element.remove());
 
-    const progressBar = document.getElementById("progressBar");
+    const scrollMeter = document.getElementById("scrollMeter");
     const navLinks = [...document.querySelectorAll(".nav a")];
-    const revealItems = [...document.querySelectorAll(".section, .quote-card")];
+    const observed = [...document.querySelectorAll("[data-observe]")];
+    const sections = [...document.querySelectorAll("main > section[id]")];
 
     const updateProgress = () => {
       const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-      progressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = max > 0 ? (scrollTop / max) * 100 : 0;
+      scrollMeter.style.width = `${Math.min(100, Math.max(0, progress))}%`;
     };
 
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-        }
+        if (entry.isIntersecting) entry.target.classList.add("is-visible");
       });
     }, { threshold: 0.12 });
 
-    revealItems.forEach((item) => revealObserver.observe(item));
+    observed.forEach((item) => revealObserver.observe(item));
 
     const sectionObserver = new IntersectionObserver((entries) => {
       const visible = entries
         .filter((entry) => entry.isIntersecting)
         .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-
       if (!visible) return;
-
       navLinks.forEach((link) => {
         link.classList.toggle("is-active", link.getAttribute("href") === `#${visible.target.id}`);
       });
-    }, { rootMargin: "-28% 0px -58% 0px", threshold: [0.18, 0.4, 0.65] });
+    }, { rootMargin: "-30% 0px -55% 0px", threshold: [0.18, 0.4, 0.65] });
 
-    document.querySelectorAll("main > section").forEach((section) => sectionObserver.observe(section));
-
-    document.querySelectorAll(".approach-card").forEach((card) => {
-      card.addEventListener("focus", () => card.classList.add("focus-ring"));
-      card.addEventListener("blur", () => card.classList.remove("focus-ring"));
-    });
-
+    sections.forEach((section) => sectionObserver.observe(section));
     window.addEventListener("scroll", updateProgress, { passive: true });
     updateProgress();
   </script>
